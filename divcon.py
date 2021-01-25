@@ -15,7 +15,6 @@ def place(p1x, p1y, p2x, p2y, p3x, p3y):
 
 def tile(n, corner):
     global cnt
-    r, c = hole
     x, y = [int(coord) for coord in corner]
 
     if n == 2:
@@ -26,22 +25,30 @@ def tile(n, corner):
                     grid[x+i][y+j] = cnt
         return
 
-    # If missing tile is in first quadrant
+    # Find 'hole' location ( not necessarily the actual hole, just the gap within this segment)
+    for i in range(x, x+n):
+        for j in range(y, y+n):
+            if grid[i][j] != 0:
+                r = i
+                c = j
+
+    # If missing tile is in 2nd quadrant CORRECT
     if (r < x + n / 2 and c < y + n / 2):
         place(x + n / 2, y + (n / 2) - 1, x + n / 2,
               y + n / 2, x + n / 2 - 1, y + n / 2)
 
-    # If missing Tile is in 2st quadrant
+    # If missing Tile is in 3rd quadrant
     elif (r >= x + n / 2 and c < y + n / 2):
-        place(x + n / 2, y + (n / 2) - 1, x + n / 2,
-              y + n / 2, x + n / 2 - 1, y + n / 2 - 1)
+        place(x + n / 2, y + (n / 2),
+              x + n / 2 - 1, y + n / 2 - 1,
+              x + n / 2 - 1, y + n / 2)
 
-    # If missing Tile is in 3st quadrant
+    # If missing Tile is in 1st quadrant
     elif (r < x + n / 2 and c >= y + n / 2):
-        place(x + (n / 2) - 1, y + (n / 2), x + (n / 2),
-              y + n / 2, x + (n / 2) - 1, y + (n / 2) - 1)
+        place(x + (n / 2) - 1, y + (n / 2) - 1, x + (n / 2),
+              y + n / 2 - 1, x + (n / 2), y + (n / 2))
 
-    # If missing Tile is in 4st quadrant
+    # If missing Tile is in 4th quadrant CORRECT
     elif (r >= x + n / 2 and c >= y + n / 2):
         place(x + (n / 2) - 1, y + (n / 2), x + (n / 2),
               y + (n / 2) - 1, x + (n / 2) - 1,
@@ -57,7 +64,7 @@ def tile(n, corner):
 grid_size = 8  # number of tiles on side, a power of 2 min 2
 grid = np.zeros((grid_size, grid_size), dtype=np.int8)
 
-hole = (0, 0)
+hole = (0, 3)
 cnt = 0
 grid[hole] = -1
 

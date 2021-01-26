@@ -47,11 +47,23 @@ def draw_grid(ori, grid):
                 thisGridSize/2):, int(thisGridSize/2):])
 
 
-ori = (2, [(3, []), (1, []), (1, []), (2, [])])
+def generateOri(hole, grid_size):
 
-grid_size = 4
+
+ori4 = (2, [(3, []), (1, []), (1, []), (2, [])])
+ori8 = (2, [(3, [(3, []), (4, []), (3, []), (2, [])]),
+            (1, [(4, []), (4, []), (1, []), (2, [])]),
+            (1, [(1, []), (4, []), (1, []), (2, [])]),
+            (2, [(3, []), (2, []), (1, []), (2, [])])
+            ]
+        )
+
+grid_size = 8
 grid = np.zeros((grid_size, grid_size))
 
+hole = (1, 3)  # (2, 4) for ori8
+grid[hole] = -1
+
 cnt = 0
-draw_grid(ori, grid)
+draw_grid(ori8, grid)
 print(grid)
